@@ -13,6 +13,7 @@
 		3D0A89B21BA6CC620081B2D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D0A89B11BA6CC620081B2D8 /* Assets.xcassets */; };
 		3D0A89B51BA6CC620081B2D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D0A89B31BA6CC620081B2D8 /* LaunchScreen.storyboard */; };
 		3D0A89BD1BA6CC6D0081B2D8 /* LeftTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0A89BC1BA6CC6D0081B2D8 /* LeftTableViewController.swift */; };
+		3D0A89BF1BA6D1820081B2D8 /* VZSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0A89BE1BA6D1820081B2D8 /* VZSideViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		3D0A89B41BA6CC620081B2D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3D0A89B61BA6CC620081B2D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3D0A89BC1BA6CC6D0081B2D8 /* LeftTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftTableViewController.swift; sourceTree = "<group>"; };
+		3D0A89BE1BA6D1820081B2D8 /* VZSideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VZSideViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				3D0A89AA1BA6CC620081B2D8 /* AppDelegate.swift */,
 				3D0A89AC1BA6CC620081B2D8 /* ViewController.swift */,
 				3D0A89BC1BA6CC6D0081B2D8 /* LeftTableViewController.swift */,
+				3D0A89BE1BA6D1820081B2D8 /* VZSideViewController.swift */,
 				3D0A89AE1BA6CC620081B2D8 /* Main.storyboard */,
 				3D0A89B11BA6CC620081B2D8 /* Assets.xcassets */,
 				3D0A89B31BA6CC620081B2D8 /* LaunchScreen.storyboard */,
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D0A89AD1BA6CC620081B2D8 /* ViewController.swift in Sources */,
+				3D0A89BF1BA6D1820081B2D8 /* VZSideViewController.swift in Sources */,
 				3D0A89BD1BA6CC6D0081B2D8 /* LeftTableViewController.swift in Sources */,
 				3D0A89AB1BA6CC620081B2D8 /* AppDelegate.swift in Sources */,
 			);

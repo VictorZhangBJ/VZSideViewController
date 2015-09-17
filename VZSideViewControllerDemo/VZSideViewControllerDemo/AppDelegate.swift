@@ -16,6 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        let lvc = LeftTableViewController()
+        let mainVC = ViewController()
+        
+        let vzvc = VZSideViewController()
+        vzvc.leftViewController = lvc
+        vzvc.mainViewController = mainVC
+        
+        self.window?.rootViewController = vzvc
+        self.window?.makeKeyAndVisible()
+        
+        
+        
         return true
     }
 

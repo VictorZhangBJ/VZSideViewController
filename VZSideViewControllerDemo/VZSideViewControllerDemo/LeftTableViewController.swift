@@ -10,9 +10,12 @@ import UIKit
 
 class LeftTableViewController: UITableViewController {
 
+    var dataSourc = [String](count: 10, repeatedValue: "victor zhang")
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -29,12 +32,17 @@ class LeftTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return dataSourc.count
+    }
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        cell.textLabel?.text = dataSourc[indexPath.row]
+        return cell
     }
 
     /*
