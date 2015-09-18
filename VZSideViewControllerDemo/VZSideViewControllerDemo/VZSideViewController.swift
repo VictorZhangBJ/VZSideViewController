@@ -16,10 +16,14 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
     var previoutPositionX: CGFloat = 0.0     //记录滑动手势上次所在X位置
     let LeftMaxCenterX: CGFloat = UIScreen.mainScreen().bounds.size.width * 7.0 / 6.0
     let maxScale: CGFloat = 0.75
+    let offsetScale: CGFloat = 0.25
+    let offsetX = UIScreen.mainScreen().bounds.size.width * 0.78
+    
+    var destinationCenterX = 0.0;
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.blueColor()
+        self.view.backgroundColor = UIColor.whiteColor()
         
         self.view.addSubview((mainViewController?.view)!)
         self.view.addSubview((leftViewController?.view)!)
@@ -47,22 +51,66 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
     
     //处理滑动事件
     func handlePan(panGesture: UIPanGestureRecognizer){
-        let translationPointX = panGesture.translationInView(mainViewController?.view).x
-        if panGesture.view?.center.x >= LeftMaxCenterX {
-            print("view.centerX = \(panGesture.view?.center.x)", appendNewline: true)
-            print("截至: \(translationPointX)", appendNewline: true)
+        let positionX = panGesture.locationInView(self.view).x
+        let translationPointX = panGesture.translationInView(mainViewController!.view).x
+        
+        print("translationX = \(translationPointX)------- positionX = \(positionX)", appendNewline: true)
+        
+        let anchorPointX = panGesture.view!.center.x + translationPointX
+        
+        if anchorPointX <= LeftMaxCenterX && anchorPointX >= 0{
+            panGesture.view!.center = CGPointMake(self.view.center.x + positionX, panGesture.view!.center.y)
+            let scale = 1 - ((positionX / offsetX) * offsetScale)
+            //panGesture.view?.transform = CGAffineTransformMakeScale(scale, scale)
 
-            return
+        }else{
+            print("已到截至位置", appendNewline: true)
+            print("截至 centerX = \(panGesture.view?.center.x)", appendNewline: true)
+            print("leftMaxCenterX = \(LeftMaxCenterX)", appendNewline: true)
         }
         
-        print("translationViweX: \(translationPointX)", appendNewline: true)
+        //手势修正
+        if panGesture.state == UIGestureRecognizerState.Ended {
+            //显示主视图
+            if panGesture.view?.center.x <= UIScreen.mainScreen().bounds.size.width {
+                self.showMainView()
+                
+                
+            }else{
+                //显示左侧视图
+                self.showLeftView()
+                            }
+        }
         
-        
-        
+      
+    }
+    
+    func showMainView(){
+        print("显示主视图修正", appendNewline: true)
+        let interval: NSTimeInterval = 0.2
+        UIView.animateWithDuration(interval, animations: { () -> Void in
+            self.mainViewController?.view.center = CGPointMake(self.view.center.x, self.view.center.y)
+            self.mainViewController?.view.transform = CGAffineTransformMakeScale(1.0, 1.0)
+            }, completion: { (finished: Bool) -> Void in
+                print("修正结束", appendNewline: true)
+        })
         
     }
     
-    
+    func showLeftView()
+    {
+        print("显示左视图修正", appendNewline: true)
+        let interval: NSTimeInterval = 0.2
+        UIView.animateWithDuration(interval, animations: { () -> Void in
+            self.mainViewController?.view.center = CGPointMake(self.LeftMaxCenterX, self.view.bounds.size.height / 2.0)
+            self.mainViewController?.view.transform = CGAffineTransformMakeScale(0.75, 0.75)
+            }, completion: { (finished: Bool) -> Void in
+                print("修正结束", appendNewline: true)
+        })
+
+        
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
