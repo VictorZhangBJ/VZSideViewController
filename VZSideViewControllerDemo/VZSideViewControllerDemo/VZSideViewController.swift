@@ -12,15 +12,12 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
 
     var leftViewController: UIViewController?
     var mainViewController: UIViewController?
-    
-    var previoutPositionX: CGFloat = 0.0     //记录滑动手势上次所在X位置
+    var prevX: CGFloat = 0;
+    var scale:CGFloat = 1.0;
     let LeftMaxCenterX: CGFloat = UIScreen.mainScreen().bounds.size.width * 7.0 / 6.0
     let maxScale: CGFloat = 0.75
-    let offsetScale: CGFloat = 0.25
     let offsetX = UIScreen.mainScreen().bounds.size.width * 0.78
-    
-    var destinationCenterX = 0.0;
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.whiteColor()
@@ -35,6 +32,16 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
         mainViewController?.view.addGestureRecognizer(panGesture)
         panGesture.delegate = self
         
+        //添加单击手势
+        let tapGesture = UITapGestureRecognizer(target: self, action: "handleTap:")
+        mainViewController?.view.addGestureRecognizer(tapGesture);
+        tapGesture.delegate = self;
+        
+    }
+    
+    func handleTap(tapGesture: UITapGestureRecognizer) {
+        print("单击，showMainView")
+        self.showMainView()
     }
     
     //手势代理方法
@@ -51,37 +58,34 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
     
     //处理滑动事件
     func handlePan(panGesture: UIPanGestureRecognizer){
-        let positionX = panGesture.locationInView(self.view).x
         let translationPointX = panGesture.translationInView(mainViewController!.view).x
+        let stepSpace = translationPointX - prevX
         
-        print("translationX = \(translationPointX)------- positionX = \(positionX)", appendNewline: true)
+        let anchorPointX = self.mainViewController!.view!.center.x + stepSpace
         
-        let anchorPointX = panGesture.view!.center.x + translationPointX
-        
-        if anchorPointX <= LeftMaxCenterX && anchorPointX >= 0{
-            panGesture.view!.center = CGPointMake(self.view.center.x + positionX, panGesture.view!.center.y)
-            let scale = 1 - ((positionX / offsetX) * offsetScale)
-            //panGesture.view?.transform = CGAffineTransformMakeScale(scale, scale)
+        if anchorPointX <= LeftMaxCenterX && anchorPointX >= self.view.center.x{
+            self.mainViewController!.view!.center = CGPointMake(self.mainViewController!.view!.center.x + (translationPointX - prevX), self.mainViewController!.view!.center.y)
+            
+            scale = scale - (stepSpace / offsetX) * (1 - maxScale + 0.04);
+            panGesture.view?.transform = CGAffineTransformMakeScale(scale, scale)
+            prevX = translationPointX
 
         }else{
-            print("已到截至位置", appendNewline: true)
-            print("截至 centerX = \(panGesture.view?.center.x)", appendNewline: true)
-            print("leftMaxCenterX = \(LeftMaxCenterX)", appendNewline: true)
+        
         }
         
         //手势修正
         if panGesture.state == UIGestureRecognizerState.Ended {
+            prevX = 0
             //显示主视图
-            if panGesture.view?.center.x <= UIScreen.mainScreen().bounds.size.width {
+            if self.mainViewController!.view?.center.x <= UIScreen.mainScreen().bounds.size.width * 6.0 / 7.0{
                 self.showMainView()
-                
                 
             }else{
                 //显示左侧视图
                 self.showLeftView()
-                            }
+            }
         }
-        
       
     }
     
@@ -91,6 +95,7 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
         UIView.animateWithDuration(interval, animations: { () -> Void in
             self.mainViewController?.view.center = CGPointMake(self.view.center.x, self.view.center.y)
             self.mainViewController?.view.transform = CGAffineTransformMakeScale(1.0, 1.0)
+            self.scale = 1.0
             }, completion: { (finished: Bool) -> Void in
                 print("修正结束", appendNewline: true)
         })
@@ -103,7 +108,8 @@ class VZSideViewController: UIViewController,UIGestureRecognizerDelegate {
         let interval: NSTimeInterval = 0.2
         UIView.animateWithDuration(interval, animations: { () -> Void in
             self.mainViewController?.view.center = CGPointMake(self.LeftMaxCenterX, self.view.bounds.size.height / 2.0)
-            self.mainViewController?.view.transform = CGAffineTransformMakeScale(0.75, 0.75)
+            self.mainViewController?.view.transform = CGAffineTransformMakeScale(self.maxScale, self.maxScale)
+            self.scale = self.maxScale;
             }, completion: { (finished: Bool) -> Void in
                 print("修正结束", appendNewline: true)
         })
